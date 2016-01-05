@@ -6,11 +6,11 @@ Actual Issues:
 - lateral swipe problems but it works until you do small swipes.
 
 ## Things to do
--[] Read feeds directly from the blog (not from /feed)
--[] Populate lateral menu
--[] built-in html reader
--[] take picture from html
--[] other things (?)
+-[ ] Read feeds directly from the blog (not from /feed)
+-[ ] Populate lateral menu
+-[ ] built-in html reader
+-[ ] take picture from html
+-[ ] other things (?)
 
 ## How can you Test it?
 This project is made with visual studio 2013 ultimate and use the windows phone 8 sdk, it's all you need.

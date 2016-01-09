@@ -30,8 +30,8 @@ namespace PhoneApp2
         bool IsNew;
         bool IsLateralOn;
         DispatcherTimer Time = new DispatcherTimer();
-        string currentitle;
         string oldtitle;
+        string currentitle;
         
         
         string html = String.Empty;
@@ -81,7 +81,7 @@ namespace PhoneApp2
         }
 
 
-        void CreateNew(string ArtName)
+        void CreateNew(string ArtName, System.DateTime currentdate, string creator)
         {
 
             System.Windows.Deployment.Current.Dispatcher.BeginInvoke(() =>
@@ -93,7 +93,7 @@ namespace PhoneApp2
                 text.Foreground = new SolidColorBrush(Color.FromArgb(200, 0, 0, 0));
                 text.FontSize = 30;
                 Thickness margin = text.Margin;
-                margin.Left = 18;
+                margin.Left = 20;
                 margin.Top = 155 + context;
                 text.Margin = margin;
                 
@@ -102,7 +102,7 @@ namespace PhoneApp2
                 rect.Height = 173;
                 rect.Width = 400;
                 Thickness margin2 = rect.Margin;
-                margin2.Left = -32;
+                margin2.Left = -40;
                 margin2.Top = -1052 + rectcontext;
                 rect.Margin = margin2;
                 rect.Fill = new SolidColorBrush(Color.FromArgb(200, 244, 244 , 245));
@@ -118,11 +118,23 @@ namespace PhoneApp2
                 lateralRect.Margin = margin3;
                 lateralRect.Fill = new SolidColorBrush(Color.FromArgb(250, 104, 104, 104));
                 lateralRect.Stroke = new SolidColorBrush(Color.FromArgb(00, 00, 00, 00));
+
+                //time and date
+                TextBlock date = new TextBlock();
+                date.Text = (creator + " " + currentdate);
+                date.FontFamily = new System.Windows.Media.FontFamily("Segoe WP");
+                date.Foreground = new SolidColorBrush(Color.FromArgb(200, 15, 15, 15));
+                date.FontSize = 17.5;
+                Thickness margin4 = date.Margin;
+                margin4.Left = 20;
+                margin4.Top = 190 + context;
+                date.Margin = margin4;
                 
-                //add everything to the main grid
+                //add everything to the main grid       note: first you add will be deeper, and so on..
                 griglia.Children.Add(lateralRect);
                 griglia.Children.Add(rect);
                 griglia.Children.Add(text);
+                griglia.Children.Add(date);
 
                 
                 rectcontext = rectcontext + 460;
@@ -168,37 +180,40 @@ namespace PhoneApp2
             using (StreamReader stream = new StreamReader(risposta.GetResponseStream()))
             {
                 string xml = stream.ReadToEnd();
-
                 var document = XDocument.Parse(xml);
+                XNamespace dcNamespace = "http://purl.org/dc/elements/1.1/";
+                                              
 
                 var posts = (from p in document.Descendants("item")
                              select new
                              {
+                                
                                  Title = p.Element("title").Value,
                                  Link = p.Element("link").Value,
                                  Description = p.Element("description").Value,
                                  Comments = p.Element("comments").Value,
+                                 creator = p.Element(dcNamespace + "creator").Value,
                                  PubDate = DateTime.Parse(p.Element("pubDate").Value)
                              }).ToList();
 
                           foreach (var post in posts)
                             {
                                 currentitle = (post.Title);
+                                string creator = (post.creator);
+                                System.DateTime currentdate = (post.PubDate);
                                 System.Diagnostics.Debug.WriteLine(post.Title);
                                 System.Diagnostics.Debug.WriteLine(post.Link);
                                 System.Diagnostics.Debug.WriteLine(post.Comments);
                                 System.Diagnostics.Debug.WriteLine(post.PubDate);
                                 System.Diagnostics.Debug.WriteLine(post.Description);
+
+                                System.Diagnostics.Debug.WriteLine(post.creator);
                                 IsNew = CheckIfNew();
                                 if (IsNew == true)
                                 {
-                                    CreateNew(currentitle);
+                                    CreateNew(currentitle, currentdate, creator );
                                 }
                             }
-
-                          //  System.Diagnostics.Debug.WriteLine(html);
-                          //  System.Diagnostics.Debug.WriteLine(finalData);
-                               // System.Diagnostics.Debug.WriteLine(finalData2);
             }
         }
 

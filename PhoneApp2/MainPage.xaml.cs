@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Windows;
 using System.Windows.Media;
+using System.Text;
 using System.Windows.Threading;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
@@ -80,24 +81,25 @@ namespace PhoneApp2
          
         }
 
-        string CheckArtName(string ArtName)
+        string CutString(string ArtName, int num)
         {
-            if(ArtName.Length> 38) { 
-            ArtName = ArtName.Substring(0, Math.Min(38, ArtName.Length));
+            if(ArtName.Length> num) { 
+            ArtName = ArtName.Substring(0, Math.Min(num, ArtName.Length));
                 ArtName = ArtName + "...";
                     }
             return ArtName;
 
         }
 
-        void CreateNew(string ArtName, System.DateTime currentdate, string creator)
+        void CreateNew(string ArtName, System.DateTime currentdate, string creator, string description)
         {
 
             System.Windows.Deployment.Current.Dispatcher.BeginInvoke(() =>
             {
-                ArtName = CheckArtName(ArtName);
+                
                 //Title
                 TextBlock text = new TextBlock();
+                ArtName = CutString(ArtName, 38);
                 text.Text = ArtName;
                 text.FontFamily = new System.Windows.Media.FontFamily("Segoe WP");
                 text.Foreground = new SolidColorBrush(Color.FromArgb(200, 0, 0, 0));
@@ -131,7 +133,7 @@ namespace PhoneApp2
 
                 //time and date
                 TextBlock date = new TextBlock();
-                date.Text = (creator + " " + currentdate);
+                date.Text = (creator + " " + currentdate.Day + "/" + currentdate.Month + "/" + currentdate.Year + " " + currentdate.Hour + ":" + currentdate.Minute);
                 date.FontFamily = new System.Windows.Media.FontFamily("Segoe WP");
                 date.Foreground = new SolidColorBrush(Color.FromArgb(200, 15, 15, 15));
                 date.FontSize = 17.5;
@@ -139,12 +141,28 @@ namespace PhoneApp2
                 margin4.Left = 20;
                 margin4.Top = 190 + context;
                 date.Margin = margin4;
-                
+
+                //Description
+                description = getBetween(description, "<p>", "</p>");
+                description = SpliceText(description, 46);
+                description = CutString(description, 170);
+                TextBlock Description = new TextBlock();
+                Description.Text = description;
+                Description.FontFamily = new System.Windows.Media.FontFamily("Segoe WP");
+                Description.Foreground = new SolidColorBrush(Color.FromArgb(200, 0, 0, 0));
+                Description.FontSize = 20;
+                Thickness margin5 = Description.Margin;
+                margin5.Left = 20;
+                margin5.Top = 215 + context;
+                Description.Margin = margin5;
+                System.Diagnostics.Debug.WriteLine(description);
+
                 //add everything to the main grid       note: first you add will be deeper, and so on..
                 griglia.Children.Add(rect);
                 griglia.Children.Add(lateralRect);
                 griglia.Children.Add(text);
                 griglia.Children.Add(date);
+                griglia.Children.Add(Description);
 
                 
                 rectcontext = rectcontext + 460;
@@ -153,6 +171,16 @@ namespace PhoneApp2
             });
 
             
+        }
+
+        public static string SpliceText(string text, int lineLength)
+        {
+            var charCount = 0;
+            var lines = text.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries)
+                            .GroupBy(w => (charCount += w.Length + 1) / lineLength)
+                            .Select(g => string.Join(" ", g));
+
+            return String.Join("\n", lines.ToArray());
         }
 
         public static string getBetween(string strSource, string strStart, string strEnd)
@@ -210,6 +238,7 @@ namespace PhoneApp2
                             {
                                 currentitle = (post.Title);
                                 string creator = (post.creator);
+                                string description = (post.Description);
                                 System.DateTime currentdate = (post.PubDate);
                                 System.Diagnostics.Debug.WriteLine(post.Title);
                                 System.Diagnostics.Debug.WriteLine(post.Link);
@@ -221,7 +250,7 @@ namespace PhoneApp2
                                 IsNew = CheckIfNew();
                                 if (IsNew == true)
                                 {
-                                    CreateNew(currentitle, currentdate, creator );
+                                    CreateNew(currentitle, currentdate, creator, description);
                                 }
                             }
             }

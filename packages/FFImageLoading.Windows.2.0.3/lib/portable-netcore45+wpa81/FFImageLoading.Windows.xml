@@ -1,0 +1,367 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>FFImageLoading.Windows</name>
+    </assembly>
+    <members>
+        <member name="T:FFImageLoading.Cache.DiskCache">
+            <summary>
+            Disk cache Windows implementation.
+            </summary>
+        </member>
+        <member name="M:FFImageLoading.Cache.DiskCache.CreateCache(System.String,System.String)">
+            <summary>
+            Creates new cache default instance.
+            </summary>
+            <returns>The cache.</returns>
+            <param name="cacheName">Cache name.</param>
+            <param name="version">Version.</param>
+        </member>
+        <member name="M:FFImageLoading.Cache.DiskCache.GetBasePathAsync">
+            <summary>
+            Gets the base path.
+            </summary>
+            <returns>The base path.</returns>
+        </member>
+        <member name="M:FFImageLoading.Cache.DiskCache.AddToSavingQueueIfNotExists(System.String,System.Byte[],System.TimeSpan)">
+            <summary>
+            Adds the file to cache and file saving queue if not exists.
+            </summary>
+            <param name="key">Key.</param>
+            <param name="bytes">Bytes.</param>
+            <param name="duration">Duration.</param>
+        </member>
+        <member name="M:FFImageLoading.Cache.DiskCache.TryGetAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Tries to get cached file as byte array.
+            </summary>
+            <returns>The get async.</returns>
+            <param name="key">Key.</param>
+            <param name="token">Token.</param>
+        </member>
+        <member name="M:FFImageLoading.Cache.DiskCache.TryGetStreamAsync(System.String)">
+            <summary>
+            Tries to get cached file as stream.
+            </summary>
+            <returns>The get async.</returns>
+            <param name="key">Key.</param>
+        </member>
+        <member name="M:FFImageLoading.Cache.DiskCache.RemoveAsync(System.String)">
+            <summary>
+            Removes the specified cache entry.
+            </summary>
+            <param name="key">Key.</param>
+        </member>
+        <member name="M:FFImageLoading.Cache.DiskCache.ClearAsync">
+            <summary>
+            Clears all cache entries.
+            </summary>
+        </member>
+        <member name="P:FFImageLoading.ImageService.Config">
+            <summary>
+            Gets FFImageLoading configuration
+            </summary>
+            <value>The configuration used by FFImageLoading.</value>
+        </member>
+        <member name="M:FFImageLoading.ImageService.Initialize(System.Nullable{System.Int32},System.Net.Http.HttpClient,FFImageLoading.Work.IWorkScheduler,FFImageLoading.Helpers.IMiniLogger,FFImageLoading.Cache.IDiskCache,FFImageLoading.Cache.IDownloadCache,System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{FFImageLoading.Work.InterpolationMode},System.Int32,System.Int32)">
+            <summary>
+            Initialize ImageService default values. This can only be done once: during app start.
+            </summary>
+            <param name="maxCacheSize">Max cache size. If zero then 20% of the memory will be used.</param>
+            <param name="httpClient">.NET HttpClient to use. If null then a.NET HttpClient is instanciated.</param>
+            <param name="scheduler">Work scheduler used to organize/schedule loading tasks.</param>
+            <param name="logger">Basic logger. If null a very simple implementation that prints to console is used.</param>
+            <param name="diskCache">Disk cache. If null a default disk cache is instanciated that uses a journal mechanism.</param>
+            <param name="downloadCache">Download cache. If null a default download cache is instanciated, which relies on the DiskCache</param>
+            <param name="loadWithTransparencyChannel">Gets a value indicating whether images should be loaded with transparency channel. On Android we save 50% of the memory without transparency since we use 2 bytes per pixel instead of 4.</param>
+            <param name="fadeAnimationEnabled">Defines if fading should be performed while loading images.</param>
+            <param name="transformPlaceholders">Defines if transforms should be applied to placeholders.</param>
+            <param name="downsampleInterpolationMode">Defines default downsample interpolation mode.</param>
+            <param name="httpHeadersTimeout">Maximum time in seconds to wait to receive HTTP headers before the HTTP request is cancelled.</param>
+            <param name="httpReadTimeout">Maximum time in seconds to wait before the HTTP request is cancelled.</param>
+        </member>
+        <member name="M:FFImageLoading.ImageService.LoadFile(System.String)">
+            <summary>
+            Constructs a new TaskParameter to load an image from a file.
+            </summary>
+            <returns>The new TaskParameter.</returns>
+            <param name="filepath">Path to the file.</param>
+        </member>
+        <member name="M:FFImageLoading.ImageService.LoadUrl(System.String,System.Nullable{System.TimeSpan})">
+            <summary>
+            Constructs a new TaskParameter to load an image from a URL.
+            </summary>
+            <returns>The new TaskParameter.</returns>
+            <param name="url">URL to the file</param>
+            <param name="cacheDuration">How long the file will be cached on disk</param>
+        </member>
+        <member name="M:FFImageLoading.ImageService.LoadFileFromApplicationBundle(System.String)">
+            <summary>
+            Constructs a new TaskParameter to load an image from a file from application bundle.
+            </summary>
+            <returns>The new TaskParameter.</returns>
+            <param name="filepath">Path to the file.</param>
+        </member>
+        <member name="M:FFImageLoading.ImageService.LoadCompiledResource(System.String)">
+            <summary>
+            Constructs a new TaskParameter to load an image from a compiled drawable resource.
+            </summary>
+            <returns>The new TaskParameter.</returns>
+            <param name="resourceName">Name of the resource in drawable folder without extension</param>
+        </member>
+        <member name="P:FFImageLoading.ImageService.ExitTasksEarly">
+            <summary>
+            Gets a value indicating whether ImageService will exit tasks earlier
+            </summary>
+            <value><c>true</c> if it should exit tasks early; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="M:FFImageLoading.ImageService.SetExitTasksEarly(System.Boolean)">
+            <summary>
+            Sets a value indicating whether ImageService will exit tasks earlier
+            </summary>
+            <param name="exitTasksEarly">If set to <c>true</c> exit tasks early.</param>
+        </member>
+        <member name="M:FFImageLoading.ImageService.SetPauseWork(System.Boolean)">
+            <summary>
+            Sets a value indicating if all loading work should be paused (silently canceled).
+            </summary>
+            <param name="pauseWork">If set to <c>true</c> pause/cancel work.</param>
+        </member>
+        <member name="M:FFImageLoading.ImageService.CancelWorkFor(FFImageLoading.Work.IImageLoaderTask)">
+            <summary>
+            Cancel any loading work for the given ImageView
+            </summary>
+            <param name="task">Image loading task to cancel.</param>
+        </member>
+        <member name="M:FFImageLoading.ImageService.RemovePendingTask(FFImageLoading.Work.IImageLoaderTask)">
+            <summary>
+            Removes a pending image loading task from the work queue.
+            </summary>
+            <param name="task">Image loading task to remove.</param>
+        </member>
+        <member name="M:FFImageLoading.ImageService.LoadImage(FFImageLoading.Work.IImageLoaderTask)">
+            <summary>
+            Queue an image loading task.
+            </summary>
+            <param name="task">Image loading task.</param>
+        </member>
+        <member name="M:FFImageLoading.ImageService.InvalidateMemoryCache">
+            <summary>
+            Invalidates the memory cache.
+            </summary>
+        </member>
+        <member name="M:FFImageLoading.ImageService.InvalidateDiskCache">
+            <summary>
+            Invalidates the disk cache.
+            </summary>
+        </member>
+        <member name="M:FFImageLoading.ImageService.Invalidate(System.String,FFImageLoading.Cache.CacheType)">
+            <summary>
+            Invalidates the cache for given key.
+            </summary>
+        </member>
+        <member name="P:FFImageLoading.Work.ImageLoaderTaskBase.Parameters">
+            <summary>
+            Gets the parameters used to retrieve the image.
+            </summary>
+            <value>The parameters to retrieve the image.</value>
+        </member>
+        <member name="P:FFImageLoading.Work.ImageLoaderTaskBase.Completed">
+            <summary>
+            Gets or sets a value indicating whether this <see cref="T:FFImageLoading.Work.ImageLoaderTaskBase"/> is completed.
+            </summary>
+            <value><c>true</c> if completed; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="M:FFImageLoading.Work.ImageLoaderTaskBase.GetKey(System.String)">
+            <summary>
+            Gets the cache key for this image loading task.
+            </summary>
+            <value>The cache key.</value>
+        </member>
+        <member name="M:FFImageLoading.Work.ImageLoaderTaskBase.CanUseMemoryCache(System.String)">
+            <summary>
+            Indicates if memory cache should be used for the request
+            </summary>
+            <returns><c>true</c>, if memory cache should be used, <c>false</c> otherwise.</returns>
+            <param name="path">Path.</param>
+        </member>
+        <member name="M:FFImageLoading.Work.ImageLoaderTaskBase.PrepareAndTryLoadingFromCacheAsync">
+            <summary>
+            Prepares the instance before it runs.
+            </summary>
+        </member>
+        <member name="M:FFImageLoading.Work.ImageLoaderTaskBase.CancelIfNeeded">
+            <summary>
+            Cancel current task only if needed
+            </summary>
+        </member>
+        <member name="M:FFImageLoading.Work.ImageLoaderTaskBase.TryLoadingFromCacheAsync">
+            <summary>
+            Tries to load requested image from the cache asynchronously.
+            </summary>
+            <returns>A boolean indicating if image was loaded from cache.</returns>
+        </member>
+        <member name="M:FFImageLoading.Work.ImageLoaderTaskBase.LoadFromStreamAsync(System.IO.Stream)">
+            <summary>
+            Loads the image from given stream asynchronously.
+            </summary>
+            <returns>An awaitable task.</returns>
+            <param name="stream">The stream to get data from.</param>
+        </member>
+        <member name="M:FFImageLoading.TaskParameterExtensions.Into(FFImageLoading.Work.TaskParameter,Windows.UI.Xaml.Controls.Image)">
+            <summary>
+            Loads the image into given imageView using defined parameters.
+            </summary>
+            <param name="parameters">Parameters for loading the image.</param>
+            <param name="imageView">Image view that should receive the image.</param>
+        </member>
+        <member name="M:FFImageLoading.TaskParameterExtensions.IntoAsync(FFImageLoading.Work.TaskParameter,Windows.UI.Xaml.Controls.Image)">
+            <summary>
+            Only use this method if you plan to handle exceptions in your code. Awaiting this method will give you this flexibility.
+            </summary>
+            <returns>An awaitable Task.</returns>
+            <param name="parameters">Parameters for loading the image.</param>
+            <param name="imageView">Image view that should receive the image.</param>
+        </member>
+        <member name="M:FFImageLoading.TaskParameterExtensions.Invalidate(FFImageLoading.Work.TaskParameter,FFImageLoading.Cache.CacheType)">
+            <summary>
+            Invalidate the image corresponding to given parameters from given caches.
+            </summary>
+            <param name="parameters">Image parameters.</param>
+            <param name="cacheType">Cache type.</param>
+        </member>
+        <member name="F:FFImageLoading.FFImage.RetryCountProperty">
+            <summary>
+            The retry count property.
+            </summary>
+        </member>
+        <member name="P:FFImageLoading.FFImage.RetryCount">
+            <summary>
+            If image loading fails automatically retry it a number of times, with a specific delay. Sets number of retries.
+            </summary>
+        </member>
+        <member name="F:FFImageLoading.FFImage.RetryDelayProperty">
+            <summary>
+            The retry delay property.
+            </summary>
+        </member>
+        <member name="P:FFImageLoading.FFImage.RetryDelay">
+            <summary>
+            If image loading fails automatically retry it a number of times, with a specific delay. Sets delay in milliseconds between each trial
+            </summary>
+        </member>
+        <member name="F:FFImageLoading.FFImage.DownsampleWidthProperty">
+            <summary>
+            The downsample width property.
+            </summary>
+        </member>
+        <member name="P:FFImageLoading.FFImage.DownsampleWidth">
+            <summary>
+            Reduce memory usage by downsampling the image. Aspect ratio will be kept even if width/height values are incorrect. 
+            Optional DownsampleWidth parameter, if value is higher than zero it will try to downsample to this width while keeping aspect ratio.
+            </summary>
+        </member>
+        <member name="F:FFImageLoading.FFImage.DownsampleHeightProperty">
+            <summary>
+            The downsample height property.
+            </summary>
+        </member>
+        <member name="P:FFImageLoading.FFImage.DownsampleHeight">
+            <summary>
+            Reduce memory usage by downsampling the image. Aspect ratio will be kept even if width/height values are incorrect. 
+            Optional DownsampleHeight parameter, if value is higher than zero it will try to downsample to this height while keeping aspect ratio.
+            </summary>
+        </member>
+        <member name="P:FFImageLoading.FFImage.DownsampleToViewSize">
+            <summary>
+            Reduce memory usage by downsampling the image. Aspect ratio will be kept even if width/height values are incorrect.
+            DownsampleWidth and DownsampleHeight properties will be automatically set to view size
+            If the view height or width will not return > 0 - it'll fall back 
+            to using DownsampleWidth / DownsampleHeight properties values
+            </summary>
+            <value><c>true</c> if downsample to view size; otherwise, <c>false</c>.</value>
+        </member>
+        <!-- Badly formed XML comment ignored for member "F:FFImageLoading.FFImage.DownsampleModeProperty" -->
+        <member name="P:FFImageLoading.FFImage.DownsampleMode">
+            <summary>
+            Set interpolation (resizing) algorithm.
+            </summary>
+            <value>InterpolationMode enumeration. Bilinear by default.</value>
+        </member>
+        <member name="P:FFImageLoading.FFImage.DownsampleUseDipUnits">
+            <summary>
+            If set to <c>true</c> DownsampleWidth and DownsampleHeight properties 
+            will use density independent pixels for downsampling
+            </summary>
+            <value><c>true</c> if downsample use dip units; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="F:FFImageLoading.FFImage.CacheDurationProperty">
+            <summary>
+            The cache duration property.
+            </summary>
+        </member>
+        <member name="P:FFImageLoading.FFImage.CacheDuration">
+            <summary>
+            How long the file will be cached on disk.
+            </summary>
+        </member>
+        <member name="F:FFImageLoading.FFImage.FadeAnimationEnabledProperty">
+            <summary>
+            The fade animation enabled property.
+            </summary>
+        </member>
+        <member name="P:FFImageLoading.FFImage.FadeAnimationEnabled">
+            <summary>
+            Indicates if the fade animation effect should be enabled. By default this value comes from ImageService.Config.FadeAnimationEnabled.
+            </summary>
+        </member>
+        <member name="F:FFImageLoading.FFImage.TransformPlaceholdersProperty">
+            <summary>
+            The transform placeholders property.
+            </summary>
+            
+        </member>
+        <member name="P:FFImageLoading.FFImage.TransformPlaceholders">
+            <summary>
+            Indicates if transforms should be applied to placeholders.  By default this value comes from ImageService.Config.TransformPlaceholders.
+            </summary>
+        </member>
+        <member name="F:FFImageLoading.FFImage.LoadingPlaceholderProperty">
+            <summary>
+            The loading placeholder property.
+            </summary>
+        </member>
+        <member name="P:FFImageLoading.FFImage.LoadingPlaceholder">
+            <summary>
+            Gets or sets the loading placeholder image.
+            </summary>
+        </member>
+        <member name="F:FFImageLoading.FFImage.ErrorPlaceholderProperty">
+            <summary>
+            The error placeholder property.
+            </summary>
+        </member>
+        <member name="P:FFImageLoading.FFImage.ErrorPlaceholder">
+            <summary>
+            Gets or sets the error placeholder image.
+            </summary>
+        </member>
+        <member name="F:FFImageLoading.FFImage.TransformationsProperty">
+            <summary>
+            The transformations property.
+            </summary>
+        </member>
+        <member name="P:FFImageLoading.FFImage.Transformations">
+            <summary>
+            Gets or sets the transformations.
+            </summary>
+            <value>The transformations.</value>
+        </member>
+        <member name="P:FFImageLoading.FFImage.CacheKeyFactory">
+            <summary>
+            Gets or sets the cache custom key factory.
+            </summary>
+            <value>The cache key factory.</value>
+        </member>
+    </members>
+</doc>

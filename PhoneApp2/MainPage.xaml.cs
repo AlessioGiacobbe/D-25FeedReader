@@ -80,18 +80,28 @@ namespace PhoneApp2
          
         }
 
+        string CheckArtName(string ArtName)
+        {
+            if(ArtName.Length> 38) { 
+            ArtName = ArtName.Substring(0, Math.Min(38, ArtName.Length));
+                ArtName = ArtName + "...";
+                    }
+            return ArtName;
+
+        }
 
         void CreateNew(string ArtName, System.DateTime currentdate, string creator)
         {
 
             System.Windows.Deployment.Current.Dispatcher.BeginInvoke(() =>
             {
+                ArtName = CheckArtName(ArtName);
                 //Title
                 TextBlock text = new TextBlock();
                 text.Text = ArtName;
                 text.FontFamily = new System.Windows.Media.FontFamily("Segoe WP");
                 text.Foreground = new SolidColorBrush(Color.FromArgb(200, 0, 0, 0));
-                text.FontSize = 30;
+                text.FontSize = 25;
                 Thickness margin = text.Margin;
                 margin.Left = 20;
                 margin.Top = 155 + context;
@@ -100,9 +110,9 @@ namespace PhoneApp2
                 //grey rectangle
                 Rectangle rect = new Rectangle();
                 rect.Height = 173;
-                rect.Width = 400;
+                rect.Width = 450;
                 Thickness margin2 = rect.Margin;
-                margin2.Left = -40;
+                margin2.Left = -20;
                 margin2.Top = -1052 + rectcontext;
                 rect.Margin = margin2;
                 rect.Fill = new SolidColorBrush(Color.FromArgb(200, 244, 244 , 245));
@@ -131,8 +141,8 @@ namespace PhoneApp2
                 date.Margin = margin4;
                 
                 //add everything to the main grid       note: first you add will be deeper, and so on..
-                griglia.Children.Add(lateralRect);
                 griglia.Children.Add(rect);
+                griglia.Children.Add(lateralRect);
                 griglia.Children.Add(text);
                 griglia.Children.Add(date);
 

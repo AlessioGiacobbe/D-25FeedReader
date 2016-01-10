@@ -55,3 +55,6 @@ C:\Users\Alessio\Documents\GitHub\d-25FeedReader\D-25FeedReader\PhoneApp2\obj\De
 C:\Users\Alessio\Documents\GitHub\d-25FeedReader\D-25FeedReader\PhoneApp2\obj\Debug\PhoneApp2.dll
 C:\Users\Alessio\Documents\GitHub\d-25FeedReader\D-25FeedReader\PhoneApp2\obj\Debug\PhoneApp2.pdb
 C:\Users\Alessio\Documents\GitHub\d-25FeedReader\D-25FeedReader\PhoneApp2\obj\Debug\XapCacheFile.xml
+C:\Users\Alessio\Documents\GitHub\d-25FeedReader\D-25FeedReader\PhoneApp2\Bin\Debug\FFImageLoading.dll
+C:\Users\Alessio\Documents\GitHub\d-25FeedReader\D-25FeedReader\PhoneApp2\Bin\Debug\FFImageLoading.xml
+C:\Users\Alessio\Documents\GitHub\d-25FeedReader\D-25FeedReader\PhoneApp2\obj\Debug\PhoneApp2.csprojResolveAssemblyReference.cache

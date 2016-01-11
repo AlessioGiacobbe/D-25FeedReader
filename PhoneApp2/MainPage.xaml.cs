@@ -20,6 +20,12 @@ using PhoneApp2.Resources;
 
 namespace PhoneApp2
 {
+
+    public partial class App : Application
+    {
+        public string link_pubblic { get; set; }
+    }
+
     public partial class MainPage : PhoneApplicationPage
     {
         // builder
@@ -32,9 +38,10 @@ namespace PhoneApp2
         bool IsLateralOn;
         DispatcherTimer Time = new DispatcherTimer();
         string oldtitle;
-        string currentitle;
-        
-        
+        string bau;
+
+
+
         string html = String.Empty;
         public class Record
         {
@@ -91,7 +98,7 @@ namespace PhoneApp2
 
         }
 
-        void CreateNew(string ArtName, System.DateTime currentdate, string creator, string description)
+        void CreateNew(string ArtName, System.DateTime currentdate, string creator, string description, string link)
         {
 
             System.Windows.Deployment.Current.Dispatcher.BeginInvoke(() =>
@@ -164,7 +171,9 @@ namespace PhoneApp2
                 griglia.Children.Add(date);
                 griglia.Children.Add(Description);
 
-                
+                text.Tag = link;
+                text.Tap += new EventHandler<GestureEventArgs>(ArtTapped);
+
                 rectcontext = rectcontext + 460;
                 context = context + 230;
 
@@ -172,6 +181,15 @@ namespace PhoneApp2
 
             
         }
+
+        private void ArtTapped(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            (App.Current as App).link_pubblic = ((string)((TextBlock)sender).Tag);
+            MessageBox.Show((string)((TextBlock)sender).Tag);
+            NavigationService.Navigate(new Uri("/BrowserPage.xaml", UriKind.Relative));
+        }
+        
+
 
         public static string SpliceText(string text, int lineLength)
         {
@@ -236,10 +254,6 @@ namespace PhoneApp2
 
                           foreach (var post in posts)
                             {
-                                currentitle = (post.Title);
-                                string creator = (post.creator);
-                                string description = (post.Description);
-                                System.DateTime currentdate = (post.PubDate);
                                 System.Diagnostics.Debug.WriteLine(post.Title);
                                 System.Diagnostics.Debug.WriteLine(post.Link);
                                 System.Diagnostics.Debug.WriteLine(post.Comments);
@@ -247,16 +261,16 @@ namespace PhoneApp2
                                 System.Diagnostics.Debug.WriteLine(post.Description);
 
                                 System.Diagnostics.Debug.WriteLine(post.creator);
-                                IsNew = CheckIfNew();
+                                IsNew = CheckIfNew(post.Title);
                                 if (IsNew == true)
                                 {
-                                    CreateNew(currentitle, currentdate, creator, description);
+                                    CreateNew(post.Title, post.PubDate, post.creator, post.Description, post.Link);
                                 }
                             }
             }
         }
 
-        bool CheckIfNew()
+        bool CheckIfNew(string currentitle)
         {
 
             if (currentitle != oldtitle)

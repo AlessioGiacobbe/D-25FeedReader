@@ -131,6 +131,7 @@
     <None Include="Properties\WMAppManifest.xml">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Resources\NuGet.Config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\AlignmentGrid.png" />
@@ -152,6 +153,8 @@
     <Content Include="Assets\Tiles\IconicTileSmall.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Resources\bar.png" />
+    <Content Include="Resources\bar2.png" />
     <Content Include="Resources\blog.png" />
     <Content Include="Resources\Cattura.PNG" />
     <Content Include="Resources\d-25.png" />

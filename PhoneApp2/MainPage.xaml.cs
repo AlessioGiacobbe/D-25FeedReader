@@ -73,6 +73,7 @@ namespace PhoneApp2
                 if (contanimation == 1)
                  {
                     uptit.Begin();
+                    titlerectin.Begin();
                 }
              }
              else
@@ -80,6 +81,7 @@ namespace PhoneApp2
                  if (contanimation_return == 0)
                  {
                     downtit.Begin();
+                    titlerectout.Begin();
                  }
              }
          
@@ -106,20 +108,20 @@ namespace PhoneApp2
                 ArtName = CutString(ArtName, 38);
                 text.Text = ArtName;
                 text.FontFamily = new System.Windows.Media.FontFamily("Segoe WP Bold");
-                text.Foreground = new SolidColorBrush(Color.FromArgb(200, 255, 255, 255));
+                text.Foreground = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));
                 text.FontSize = 26;
                 Thickness margin = text.Margin;
                 margin.Left = 20;
-                margin.Top = 260 + context;
+                margin.Top = 252 + context;
                 text.Margin = margin;
                 
                 //grey rectangle
                 Rectangle rect = new Rectangle();
-                rect.Height = 78;
+                rect.Height = 85;
                 rect.Width = 450;
                 Thickness margin2 = rect.Margin;
                 margin2.Left = 0;
-                margin2.Top = -927 + rectcontext;
+                margin2.Top = -935 + rectcontext;
                 rect.Margin = margin2;
                 rect.Fill = new SolidColorBrush(Color.FromArgb(70, 0, 0 , 0));
                 rect.Stroke = new SolidColorBrush(Color.FromArgb(00, 00, 00, 00));
@@ -132,7 +134,7 @@ namespace PhoneApp2
                 date.FontSize = 15;
                 Thickness margin4 = date.Margin;
                 margin4.Left = 21;
-                margin4.Top = 285.5 + context;
+                margin4.Top = 282 + context;
                 date.Margin = margin4;
 
                 //Description
@@ -141,14 +143,14 @@ namespace PhoneApp2
                 description = CutString(description, 85);
                 TextBlock Description = new TextBlock();
                 Description.LineStackingStrategy = LineStackingStrategy.BlockLineHeight;
-                Description.LineHeight = 17;
+                Description.LineHeight = 18;
                 Description.Text = description;
                 Description.FontFamily = new System.Windows.Media.FontFamily("Segoe WP Bold");
-                Description.Foreground = new SolidColorBrush(Color.FromArgb(200, 235, 235, 235));
+                Description.Foreground = new SolidColorBrush(Color.FromArgb(235, 235, 235, 235));
                 Description.FontSize = 19;
                 Thickness margin5 = Description.Margin;
-                margin5.Left = 26;
-                margin5.Top = 305 + context;
+                margin5.Left = 21;
+                margin5.Top = 302 + context;
                 Description.Margin = margin5;
                 System.Diagnostics.Debug.WriteLine(description);
 
@@ -326,19 +328,24 @@ namespace PhoneApp2
         {
             if (IsLateralOn == false)
             {
+                titlerectout.Begin();
                 translateral.Begin();
                 translprinc.Begin();
                 transtitle.Begin();
                 IsLateralOn = true;
                 barpress.Begin();
+                Time.Stop();
+                uptit.Begin();
+                titleleft.Begin();
             }
             else {
-
                 translateralback.Begin();
                 translprincback.Begin();
                 transtitleback.Begin();
                 rotateback.Begin();
                 IsLateralOn = false;
+                titleright.Begin();
+                Time.Start();
             }
         }
     }

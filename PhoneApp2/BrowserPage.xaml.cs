@@ -21,6 +21,19 @@ namespace PhoneApp2
             System.Diagnostics.Debug.WriteLine(link);
             //testo.Text = link;
             InitializeComponent();
+
+            this.Browser.Loaded += BrowserGo;
+        }
+
+        private void BrowserGo(object sender, RoutedEventArgs e)
+        {
+            Browser.Navigate(new Uri(link));
+            Browser.LoadCompleted += PageLoaded;
+        }
+
+        private void PageLoaded(object sender, NavigationEventArgs e)
+        {
+            MessageBox.Show("Pagina caricata");
         }
     }
 }

@@ -153,8 +153,10 @@
     <Content Include="Assets\Tiles\IconicTileSmall.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Resources\3button.png" />
     <Content Include="Resources\bar.png" />
     <Content Include="Resources\bar2.png" />
+    <Content Include="Resources\bar3.png" />
     <Content Include="Resources\blog.png" />
     <Content Include="Resources\Cattura.PNG" />
     <Content Include="Resources\d-25.png" />

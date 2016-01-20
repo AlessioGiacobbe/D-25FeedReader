@@ -159,6 +159,7 @@
     <Content Include="Resources\bar3.png" />
     <Content Include="Resources\blog.png" />
     <Content Include="Resources\Cattura.PNG" />
+    <Content Include="Resources\cloudy.png" />
     <Content Include="Resources\d-25.png" />
     <Content Include="Resources\download.png" />
     <Content Include="Resources\download_grey.png" />

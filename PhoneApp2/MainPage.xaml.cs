@@ -24,6 +24,7 @@ namespace PhoneApp2
     public partial class App : Application
     {
         public string link_pubblic { get; set; }
+        public string name_pubblic { get; set; }
     }
 
     public partial class MainPage : PhoneApplicationPage
@@ -190,6 +191,7 @@ namespace PhoneApp2
         private void ArtTapped(object sender, System.Windows.Input.GestureEventArgs e)
         {
             (App.Current as App).link_pubblic = ((string)((TextBlock)sender).Tag);
+            (App.Current as App).name_pubblic = ((string)((TextBlock)sender).Text);
             MessageBox.Show((string)((TextBlock)sender).Tag);
             NavigationService.Navigate(new Uri("/BrowserPage.xaml", UriKind.Relative));
         }
@@ -235,9 +237,11 @@ namespace PhoneApp2
 
         void Responsetocken(IAsyncResult result)
         {
-            HttpWebRequest richiesta = (HttpWebRequest)result.AsyncState;
+            try
+            {
+                HttpWebRequest richiesta = (HttpWebRequest)result.AsyncState;
             HttpWebResponse risposta = (HttpWebResponse)richiesta.EndGetResponse(result);
-
+            
             using (StreamReader stream = new StreamReader(risposta.GetResponseStream()))
             {
                 string xml = stream.ReadToEnd();
@@ -273,6 +277,21 @@ namespace PhoneApp2
                                 }
                             }
             }
+            }
+            catch (System.Net.WebException ex)
+            {
+                Dispatcher.BeginInvoke(() =>
+               ErrorLoading()
+                
+                );
+            }
+        }
+
+        void ErrorLoading()
+        {
+            ErrorGrid.Visibility = Visibility.Visible;
+            ErrorGrid.IsHitTestVisible = true;
+            ErrorIn.Begin();
         }
 
         bool CheckIfNew(string currentitle)
@@ -314,11 +333,6 @@ namespace PhoneApp2
             rotate.Begin();
         }
 
-        private void barpressback_Completed(object sender, EventArgs e)
-        {
-
-        }
-
         private void rotateback_complete(object sender, EventArgs e)
         {
             barpressback.Begin();
@@ -347,6 +361,15 @@ namespace PhoneApp2
                 titleright.Begin();
                 Time.Start();
             }
+        }
+
+        private void ReloadPage(object sender, GestureEventArgs e)
+        {
+            ErrorOut.Begin();
+            ErrorGrid.Visibility = Visibility.Collapsed;
+            ErrorGrid.IsHitTestVisible = false;
+            Request();
+            
         }
     }
 }

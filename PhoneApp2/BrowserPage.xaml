@@ -20,10 +20,10 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid HorizontalAlignment="Left" Height="801" Grid.RowSpan="2" VerticalAlignment="Top" Width="480" Margin="0,98,0,0">
-            <Rectangle Fill="#CC000000" HorizontalAlignment="Left" Height="65" Stroke="Black" VerticalAlignment="Top" Width="480" Canvas.ZIndex="20"/>
-            <TextBlock x:Name="Title" HorizontalAlignment="Left" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Margin="95,10,0,0" FontSize="40" Canvas.ZIndex="20"/>
-            <Image x:Name="image" HorizontalAlignment="Left" Height="47" VerticalAlignment="Center" Width="10" Margin="454,9,0,745" Source="/Resources/3button.png" Canvas.ZIndex="20"/>
-            <phone:WebBrowser IsScriptEnabled="True" x:Name="Browser" HorizontalAlignment="Left" VerticalAlignment="Top" Height="1080" Width="480" Margin="0,0,0,-279"/>
+            <Rectangle Fill="#CC000000" HorizontalAlignment="Left" Height="50" Stroke="Black" VerticalAlignment="Top" Width="558" Canvas.ZIndex="20" Margin="-36,0,-42,0"/>
+            <TextBlock x:Name="Title" HorizontalAlignment="Left" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Margin="10,17,0,0" FontSize="24" Canvas.ZIndex="20" Width="424"/>
+            <Image x:Name="image" HorizontalAlignment="Left" Height="33" VerticalAlignment="Center" Width="7" Margin="453,9,0,759" Source="/Resources/3button.png" Canvas.ZIndex="20" RenderTransformOrigin="0.5,0.5"/>
+            <phone:WebBrowser IsScriptEnabled="True" x:Name="Browser" HorizontalAlignment="Left" VerticalAlignment="Top" Height="903" Width="480" Margin="0,0,0,-102"/>
         </Grid>
 
         <!--TitlePanel contains the name of the application and page title-->

@@ -60,19 +60,19 @@
         <ScrollViewer x:Name="Scroller"  VerticalScrollBarVisibility="Visible" Grid.RowSpan="2" RenderTransformOrigin="0.5,0.5">
             <ScrollViewer.RenderTransform>
 
-                <CompositeTransform x:Name="zangief" TranslateX="0"/>
+                <CompositeTransform x:Name="scollertransform" TranslateX="0"/>
             </ScrollViewer.RenderTransform>
             <ScrollViewer.Resources>
                 <Storyboard x:Name="translprinc">
                     <DoubleAnimation 
-                            Storyboard.TargetName="zangief"
-                            Storyboard.TargetProperty="(zangief.TranslateX)"
+                            Storyboard.TargetName="scollertransform"
+                            Storyboard.TargetProperty="(scollertransform.TranslateX)"
                             To="45" Duration="0:0:0.4" />
                 </Storyboard>
                 <Storyboard x:Name="translprincback">
                     <DoubleAnimation 
-                            Storyboard.TargetName="zangief"
-                            Storyboard.TargetProperty="(zangief.TranslateX)"
+                            Storyboard.TargetName="scollertransform"
+                            Storyboard.TargetProperty="(scollertransform.TranslateX)"
                             To="0" Duration="0:0:0.4" />
                 </Storyboard>
             </ScrollViewer.Resources>
@@ -80,10 +80,32 @@
 
             <Grid  x:Name="griglia" Grid.Row="0" HorizontalAlignment="Left" Height="1535"  VerticalAlignment="Top" Width="480" RenderTransformOrigin="0.492,0.502">
             </Grid>
+
         </ScrollViewer>
 
+        <Grid  x:Name="ErrorGrid" IsHitTestVisible="False" Grid.Row="0" HorizontalAlignment="Left" Height="869"  VerticalAlignment="Top" Width="480" RenderTransformOrigin="0.492,0.502" Background="#CC000000" Grid.RowSpan="2" Canvas.ZIndex="1001" Margin="0,0,0,-69" Opacity="0" Visibility="Collapsed">
+            <Grid.Resources>
+                <Storyboard x:Name="ErrorIn">
+                    <DoubleAnimation 
+                    Storyboard.TargetName="ErrorGrid"
+                    Storyboard.TargetProperty="(ErrorGrid.opacity)"
+                    To="1" Duration="0:0:0.4" />
+                </Storyboard>
+                <Storyboard x:Name="ErrorOut">
+                    <DoubleAnimation 
+                    Storyboard.TargetName="ErrorGrid"
+                    Storyboard.TargetProperty="(ErrorGrid.opacity)"
+                    To="0" Duration="0:0:0.4" />
+                </Storyboard>
+            </Grid.Resources>
+            <Image  Height="392" VerticalAlignment="Top" Margin="46,160,54,0" Source="/Resources/cloudy.png"/>
+            <TextBlock TextWrapping="Wrap" Text="Qualcosa è andato storto, non siamo riusciti a comunicare con il server." VerticalAlignment="Top" Margin="24,442,23,0" Height="73" FontSize="26.667" FontFamily="Segoe WP" HorizontalAlignment="Center"/>
+            <Button x:Name="ReloadButton" Content="Riproviamo!" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="0,0,0,55" Width="470" Background="#7FFF0000" Tap="ReloadPage"/>
+            <TextBlock TextWrapping="Wrap" Text="Sei connesso ad internet?" VerticalAlignment="Top" Margin="24,515,23,0" Height="73" FontSize="20" FontFamily="Segoe WP Light" HorizontalAlignment="Center" FontStyle="Italic"/>
+        </Grid>
 
-        <Grid x:Name="title" HorizontalAlignment="Left" Height="154" Grid.RowSpan="2" VerticalAlignment="Top" Width="480" Canvas.ZIndex="100001" RenderTransformOrigin="0.5,0.5">
+
+        <Grid x:Name="title" HorizontalAlignment="Left" Height="154" Grid.RowSpan="2" VerticalAlignment="Top" Width="480" Canvas.ZIndex="1000" RenderTransformOrigin="0.5,0.5">
             <Grid.Resources>
 
                 <Storyboard x:Name="uptit">
@@ -175,7 +197,7 @@
                             To="-45" Duration="0:0:0.2" />
                 </Storyboard>
 
-                <Storyboard x:Name="barpressback" Completed="barpressback_Completed">
+                <Storyboard x:Name="barpressback">
                     <DoubleAnimation 
                             Storyboard.TargetName="bar1"
                             Storyboard.TargetProperty="(bar1.TranslateY)"

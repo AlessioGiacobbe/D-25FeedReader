@@ -154,6 +154,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\3button.png" />
+    <Content Include="Resources\ag.png" />
     <Content Include="Resources\bar.png" />
     <Content Include="Resources\bar2.png" />
     <Content Include="Resources\bar3.png" />

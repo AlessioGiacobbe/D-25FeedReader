@@ -32,7 +32,6 @@ namespace PhoneApp2
         // builder
         int context = 0;
         int rectcontext = 0;
-        double[] startXy = new double[2];
         int contanimation = 1;
         int contanimation_return = 0;
         bool IsNew;
@@ -40,8 +39,9 @@ namespace PhoneApp2
         DispatcherTimer Time = new DispatcherTimer();
         string oldtitle;
 
+        Thickness StandardMargin = new Thickness(); //decided to don't put pages in phone margin and align these after app's startup so i can edit it better
+        
 
-        string html = String.Empty;
         public class Record
         {
             public string src { get; set; }
@@ -50,50 +50,55 @@ namespace PhoneApp2
         public MainPage()
         {
             InitializeComponent();
+
+            StandardMargin.Left = 6;
+            StandardMargin.Top = 0;
+            Autor.Margin = StandardMargin;
+
             Request();                                      //request the feed's list
 
-           Time.Interval = new TimeSpan(0,0,0,0,30);       //initialize the animation's timer
-           Time.Tick += new EventHandler(Timer_Tick);
-           Time.Start();
+            Time.Interval = new TimeSpan(0, 0, 0, 0, 30);       //initialize the animation's timer
+            Time.Tick += new EventHandler(Timer_Tick);
+            Time.Start();
 
         }
 
-        private void Timer_Tick(object sender, EventArgs e) 
+        private void Timer_Tick(object sender, EventArgs e)
         {
             //it's the bets way i found to let the animation start without waiting the end of the scrolling
-            
-         var scrollViewer = (ScrollViewer)Scroller;
-         /*if (scrollViewer.VerticalOffset == scrollViewer.ScrollableHeight)
-         {
-             System.Diagnostics.Debug.WriteLine("end of scroller");
-         }*/
 
-         if (scrollViewer.VerticalOffset > 50)
-             {
+            var scrollViewer = (ScrollViewer)Scroller;
+            /*if (scrollViewer.VerticalOffset == scrollViewer.ScrollableHeight)
+            {
+                System.Diagnostics.Debug.WriteLine("end of scroller");
+            }*/
+
+            if (scrollViewer.VerticalOffset > 50)
+            {
 
                 if (contanimation == 1)
-                 {
+                {
                     uptit.Begin();
                     titlerectin.Begin();
                 }
-             }
-             else
-             {
-                 if (contanimation_return == 0)
-                 {
+            }
+            else
+            {
+                if (contanimation_return == 0)
+                {
                     downtit.Begin();
                     titlerectout.Begin();
-                 }
-             }
-         
+                }
+            }
+
         }
 
         string CutString(string ArtName, int num)
         {
-            if(ArtName.Length> num) { 
-            ArtName = ArtName.Substring(0, Math.Min(num, ArtName.Length));
+            if (ArtName.Length > num) {
+                ArtName = ArtName.Substring(0, Math.Min(num, ArtName.Length));
                 ArtName = ArtName + "...";
-                    }
+            }
             return ArtName;
 
         }
@@ -115,7 +120,7 @@ namespace PhoneApp2
                 margin.Left = 20;
                 margin.Top = 252 + context;
                 text.Margin = margin;
-                
+
                 //grey rectangle
                 Rectangle rect = new Rectangle();
                 rect.Height = 85;
@@ -124,9 +129,9 @@ namespace PhoneApp2
                 margin2.Left = 0;
                 margin2.Top = -935 + rectcontext;
                 rect.Margin = margin2;
-                rect.Fill = new SolidColorBrush(Color.FromArgb(70, 0, 0 , 0));
+                rect.Fill = new SolidColorBrush(Color.FromArgb(70, 0, 0, 0));
                 rect.Stroke = new SolidColorBrush(Color.FromArgb(00, 00, 00, 00));
-                
+
                 //time and date
                 TextBlock date = new TextBlock();
                 date.Text = (creator + " " + currentdate.Day + "/" + currentdate.Month + "/" + currentdate.Year + " " + currentdate.Hour + ":" + currentdate.Minute);
@@ -185,7 +190,7 @@ namespace PhoneApp2
 
             });
 
-            
+
         }
 
         private void ArtTapped(object sender, System.Windows.Input.GestureEventArgs e)
@@ -195,7 +200,7 @@ namespace PhoneApp2
             MessageBox.Show((string)((TextBlock)sender).Tag);
             NavigationService.Navigate(new Uri("/BrowserPage.xaml", UriKind.Relative));
         }
-        
+
 
 
         public static string SpliceText(string text, int lineLength)
@@ -224,7 +229,7 @@ namespace PhoneApp2
         }
 
 
-     
+
 
         void Request()
         {
@@ -240,49 +245,49 @@ namespace PhoneApp2
             try
             {
                 HttpWebRequest richiesta = (HttpWebRequest)result.AsyncState;
-            HttpWebResponse risposta = (HttpWebResponse)richiesta.EndGetResponse(result);
-            
-            using (StreamReader stream = new StreamReader(risposta.GetResponseStream()))
-            {
-                string xml = stream.ReadToEnd();
-                var document = XDocument.Parse(xml);
-                XNamespace dcNamespace = "http://purl.org/dc/elements/1.1/";
+                HttpWebResponse risposta = (HttpWebResponse)richiesta.EndGetResponse(result);
+
+                using (StreamReader stream = new StreamReader(risposta.GetResponseStream()))
+                {
+                    string xml = stream.ReadToEnd();
+                    var document = XDocument.Parse(xml);
+                    XNamespace dcNamespace = "http://purl.org/dc/elements/1.1/";
 
 
-                var posts = (from p in document.Descendants("item")
-                             select new
-                             {
+                    var posts = (from p in document.Descendants("item")
+                                 select new
+                                 {
 
-                                 Title = p.Element("title").Value,
-                                 Link = p.Element("link").Value,
-                                 Description = p.Element("description").Value,
-                                 Comments = p.Element("comments").Value,
-                                 creator = p.Element(dcNamespace + "creator").Value,
-                                 PubDate = DateTime.Parse(p.Element("pubDate").Value)
-                             }).ToList();
+                                     Title = p.Element("title").Value,
+                                     Link = p.Element("link").Value,
+                                     Description = p.Element("description").Value,
+                                     Comments = p.Element("comments").Value,
+                                     creator = p.Element(dcNamespace + "creator").Value,
+                                     PubDate = DateTime.Parse(p.Element("pubDate").Value)
+                                 }).ToList();
 
-                          foreach (var post in posts)
-                            {
-                    
-                                System.Diagnostics.Debug.WriteLine(post.Title);
-                                System.Diagnostics.Debug.WriteLine(post.Link);
-                                System.Diagnostics.Debug.WriteLine(post.Comments);
-                                System.Diagnostics.Debug.WriteLine(post.PubDate);
-                                System.Diagnostics.Debug.WriteLine(post.Description);
-                                System.Diagnostics.Debug.WriteLine(post.creator);
-                                IsNew = CheckIfNew(post.Title);
-                                if (IsNew == true)
-                                {
-                                    CreateNew(post.Title, post.PubDate, post.creator, post.Description, post.Link);
-                                }
-                            }
-            }
+                    foreach (var post in posts)
+                    {
+
+                        System.Diagnostics.Debug.WriteLine(post.Title);
+                        System.Diagnostics.Debug.WriteLine(post.Link);
+                        System.Diagnostics.Debug.WriteLine(post.Comments);
+                        System.Diagnostics.Debug.WriteLine(post.PubDate);
+                        System.Diagnostics.Debug.WriteLine(post.Description);
+                        System.Diagnostics.Debug.WriteLine(post.creator);
+                        IsNew = CheckIfNew(post.Title);
+                        if (IsNew == true)
+                        {
+                            CreateNew(post.Title, post.PubDate, post.creator, post.Description, post.Link);
+                        }
+                    }
+                }
             }
             catch (System.Net.WebException ex)
             {
                 Dispatcher.BeginInvoke(() =>
                ErrorLoading()
-                
+
                 );
             }
         }
@@ -308,7 +313,7 @@ namespace PhoneApp2
             }
         }
 
-        
+
 
         private void transform_complete(object sender, EventArgs e)
         {
@@ -321,7 +326,7 @@ namespace PhoneApp2
             contanimation_return = 1;
             contanimation = 1;
         }
-        
+
 
         private void LateralTransComplete(object sender, EventArgs e)
         {
@@ -342,25 +347,36 @@ namespace PhoneApp2
         {
             if (IsLateralOn == false)
             {
-                titlerectout.Begin();
-                translateral.Begin();
-                translprinc.Begin();
-                transtitle.Begin();
-                IsLateralOn = true;
-                barpress.Begin();
-                Time.Stop();
-                uptit.Begin();
-                titleleft.Begin();
+                lateralOn();
             }
             else {
-                translateralback.Begin();
-                translprincback.Begin();
-                transtitleback.Begin();
-                rotateback.Begin();
-                IsLateralOn = false;
-                titleright.Begin();
-                Time.Start();
+                lateralOff();
             }
+        }
+
+        void lateralOn()
+        {
+            titlerectout.Begin();
+            translateral.Begin();
+            translprinc.Begin();
+            transtitle.Begin();
+            IsLateralOn = true;
+            barpress.Begin();
+            Time.Stop();
+            uptit.Begin();
+            titleleft.Begin();
+        }
+
+        void lateralOff()
+        {
+            translateralback.Begin();
+            translprincback.Begin();
+            transtitleback.Begin();
+            rotateback.Begin();
+            IsLateralOn = false;
+            titleright.Begin();
+            Time.Start();
+
         }
 
         private void ReloadPage(object sender, GestureEventArgs e)
@@ -369,7 +385,94 @@ namespace PhoneApp2
             ErrorGrid.Visibility = Visibility.Collapsed;
             ErrorGrid.IsHitTestVisible = false;
             Request();
-            
+
         }
+
+        void FocusChange()
+        {
+            Autor.Visibility = Visibility.Collapsed;
+            //software.Visibility = Visibility.Collapsed;
+            Scroller.Visibility = Visibility.Collapsed;
+            //about.Visibility = Visibility.Collapsed;
+
+            Autor.IsHitTestVisible = false;
+            //software.IsHitTestVisible = false;
+            Scroller.IsHitTestVisible = false;
+            //about.IsHitTestVisible = false;
+        }
+
+        private void AutorChange(object sender, GestureEventArgs e)
+        {
+            FocusChange();
+            Autor.Visibility = Visibility.Visible;
+            Autor.IsHitTestVisible = true;
+
+            lateralOff();
+        }
+
+        private void NewsTapped(object sender, GestureEventArgs e)
+        {
+            FocusChange();
+            Scroller.Visibility = Visibility.Visible;
+            Scroller.IsHitTestVisible = true;
+
+            lateralOff();
+        }
+        
+        #region Feedreader Links
+        private void OpenBrowser(string url)
+        {
+            Microsoft.Phone.Tasks.WebBrowserTask WebBrowserTask = new Microsoft.Phone.Tasks.WebBrowserTask();
+            WebBrowserTask.Uri = new Uri(url);
+            WebBrowserTask.Show();
+        }
+
+        private void Github_click1(object sender, GestureEventArgs e)
+        {
+            OpenBrowser("https://github.com/D-25/");
+        }
+
+        private void Github_click2(object sender, GestureEventArgs e)
+        {
+            OpenBrowser("https://www.github.com/AlessioGiacobbe");
+        }
+
+        private void GPlus_Click1(object sender, GestureEventArgs e)
+        {
+            OpenBrowser("https://plus.google.com/100725403409398223348/posts");
+        }
+
+        private void GPlus_Click2(object sender, GestureEventArgs e)
+        {
+            OpenBrowser("https://plus.google.com/+AlessioGiacobbeProfile/posts");
+        }
+
+        private void Fb_Click1(object sender, GestureEventArgs e)
+        {
+            OpenBrowser("https://www.facebook.com/d25social");
+        }
+
+        private void Twitter_Click1(object sender, GestureEventArgs e)
+        {
+            OpenBrowser("https://twitter.com/giacobbealessi0");
+        }
+
+        private void Twitter_Click2(object sender, GestureEventArgs e)
+        {
+            OpenBrowser("https://twitter.com/D_25T");
+        }
+
+        private void GPlus_Click3(object sender, GestureEventArgs e)
+        {
+            OpenBrowser("https://plus.google.com/u/0/103048757221183397796/posts");
+        }
+
+        private void Fb_Click2(object sender, GestureEventArgs e)
+        {
+            OpenBrowser("https://www.facebook.com/giovanni.sganga.75?fref=ts");
+        }
+
+        #endregion
+        
     }
 }

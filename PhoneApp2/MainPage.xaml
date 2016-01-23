@@ -41,11 +41,11 @@
                 <CompositeTransform x:Name="Xvalue" TranslateX="0"/>
             </Grid.RenderTransform>
             <TextBlock x:Name="news" Height="63" Margin="76,158,77,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Segoe WP Light" Text="News" FontSize="45.333" Tap="NewsTapped"/>
-            <TextBlock LineStackingStrategy="BlockLineHeight" LineHeight="35" x:Name="soft" Height="88" Margin="49,232,49,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Segoe WP Light" FontSize="45.333">
+            <TextBlock LineStackingStrategy="BlockLineHeight" LineHeight="35" x:Name="soft" Height="88" Margin="49,232,49,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Segoe WP Light" FontSize="45.333" Tap="SoftTapped">
             	
             	<Run Text="  I nostri software"/>
             </TextBlock>
-            <TextBlock x:Name="autor" Height="65" Margin="68,296,69,0" TextWrapping="Wrap" Text="Autori" VerticalAlignment="Top" FontFamily="Segoe WP Light" FontSize="45.333" Tap="AutorChange"/>
+            <TextBlock x:Name="autor" Height="65" Margin="68,296,69,0" TextWrapping="Wrap" Text="Autori" VerticalAlignment="Top" FontFamily="Segoe WP Light" FontSize="45.333" Tap="AutorTapped"/>
             <TextBlock x:Name="about" Height="93" Margin="86,352,86,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Segoe WP Light" FontSize="45.333">
             	<Run Text="Info"/>
             	<LineBreak/>
@@ -56,7 +56,6 @@
             <Image x:Name="image_Copy1" Height="5" Margin="10,354,10,0" VerticalAlignment="Top" Source="/Resources/bar3.png" Stretch="Fill"/>
 
         </Grid>
-
 
         <ScrollViewer x:Name="Scroller"  VerticalScrollBarVisibility="Visible" Grid.RowSpan="2" RenderTransformOrigin="0.5,0.5">
             <ScrollViewer.RenderTransform>
@@ -108,6 +107,8 @@
 
         </Grid>
 
+        <Grid  x:Name="Software" IsHitTestVisible="False" Grid.Row="1" HorizontalAlignment="Left" Height="869"  VerticalAlignment="Top" Width="480" RenderTransformOrigin="0.492,0.502" Margin="1201,38,-1201,-127" Canvas.ZIndex="2000" Visibility="Collapsed">
+        </Grid>
 
         <Grid  x:Name="ErrorGrid" IsHitTestVisible="False" Grid.Row="0" HorizontalAlignment="Left" Height="869"  VerticalAlignment="Top" Width="480" RenderTransformOrigin="0.492,0.502" Background="#CC000000" Grid.RowSpan="2" Canvas.ZIndex="2500" Margin="0,0,0,-69" Opacity="0" Visibility="Collapsed">
             <Grid.Resources>
@@ -129,7 +130,6 @@
             <Button x:Name="ReloadButton" Content="Riproviamo!" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="0,0,0,55" Width="470" Background="#7FFF0000" Tap="ReloadPage"/>
             <TextBlock TextWrapping="Wrap" Text="Sei connesso ad internet?" VerticalAlignment="Top" Margin="24,515,23,0" Height="73" FontSize="20" FontFamily="Segoe WP Light" HorizontalAlignment="Center" FontStyle="Italic"/>
         </Grid>
-
 
         <Grid x:Name="title" HorizontalAlignment="Left" Height="154" Grid.RowSpan="2" VerticalAlignment="Top" Width="480" Canvas.ZIndex="2020" RenderTransformOrigin="0.5,0.5">
             <Grid.Resources>

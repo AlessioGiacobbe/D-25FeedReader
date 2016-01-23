@@ -29,9 +29,11 @@ namespace PhoneApp2
 
     public partial class MainPage : PhoneApplicationPage
     {
-        // builder
+#region Feedreader builder
         int context = 0;
         int rectcontext = 0;
+        int Softrectcontext = 275;
+        int Softcontext = 260;
         int contanimation = 1;
         int contanimation_return = 0;
         bool IsNew;
@@ -40,7 +42,7 @@ namespace PhoneApp2
         string oldtitle;
 
         Thickness StandardMargin = new Thickness(); //decided to don't put pages in phone margin and align these after app's startup so i can edit it better
-        
+        #endregion
 
         public class Record
         {
@@ -54,6 +56,10 @@ namespace PhoneApp2
             StandardMargin.Left = 6;
             StandardMargin.Top = 0;
             Autor.Margin = StandardMargin;
+            StandardMargin = Software.Margin;
+            StandardMargin.Left = 6;
+            StandardMargin.Top = 0;
+            Software.Margin = StandardMargin;
 
             Request();                                      //request the feed's list
 
@@ -391,17 +397,17 @@ namespace PhoneApp2
         void FocusChange()
         {
             Autor.Visibility = Visibility.Collapsed;
-            //software.Visibility = Visibility.Collapsed;
+            Software.Visibility = Visibility.Collapsed;
             Scroller.Visibility = Visibility.Collapsed;
             //about.Visibility = Visibility.Collapsed;
 
             Autor.IsHitTestVisible = false;
-            //software.IsHitTestVisible = false;
+            Software.IsHitTestVisible = false;
             Scroller.IsHitTestVisible = false;
             //about.IsHitTestVisible = false;
         }
 
-        private void AutorChange(object sender, GestureEventArgs e)
+        private void AutorTapped(object sender, GestureEventArgs e)
         {
             FocusChange();
             Autor.Visibility = Visibility.Visible;
@@ -418,7 +424,17 @@ namespace PhoneApp2
 
             lateralOff();
         }
-        
+
+        private void SoftTapped(object sender, GestureEventArgs e)
+        {
+            FocusChange();
+            Software.Visibility = Visibility.Visible;
+            Software.IsHitTestVisible = true;
+
+            lateralOff();
+            SoftRequest();
+        }
+
         #region Feedreader Links
         private void OpenBrowser(string url)
         {
@@ -473,6 +489,135 @@ namespace PhoneApp2
         }
 
         #endregion
+
+        #region Feedreader GetSoftware
         
+
+        void SoftRequest()
+        {
+            var link = new Uri("https://dl.dropboxusercontent.com/s/s9tq7e1ekto6sln/SoftFeed");
+            var request = (HttpWebRequest)WebRequest.Create(link);
+            request.Method = "GET";
+            request.BeginGetResponse(SoftResponse, request);
+        }
+
+
+        void SoftResponse(IAsyncResult result)
+        {
+            try
+            {
+                HttpWebRequest richiesta = (HttpWebRequest)result.AsyncState;
+                HttpWebResponse risposta = (HttpWebResponse)richiesta.EndGetResponse(result);
+
+                using (StreamReader stream = new StreamReader(risposta.GetResponseStream()))
+                {
+                    string xml = stream.ReadToEnd();
+                    var document = XDocument.Parse(xml);
+                    XNamespace dcNamespace = "http://purl.org/dc/elements/1.1/";
+
+
+                    var posts = (from p in document.Descendants("item")
+                                 select new
+                                 {
+                                     Title = p.Element("title").Value,
+                                     Link = p.Element("link").Value,
+                                     Comments = p.Element("comments").Value,
+                                     PubDate = p.Element("pubDate").Value,
+                                 }).ToList();
+
+                    foreach (var post in posts)
+                    {
+
+                        System.Diagnostics.Debug.WriteLine(post.Title);
+                        System.Diagnostics.Debug.WriteLine(post.Link);
+                        System.Diagnostics.Debug.WriteLine(post.Comments);
+                        System.Diagnostics.Debug.WriteLine(post.PubDate);
+                        SoftCreate(post.Title, post.Comments, post.Link, post.PubDate);
+                    }
+                }
+            }
+            catch (System.Net.WebException ex)
+            {
+                System.Diagnostics.Debug.WriteLine("Errore di caricamento");
+            }
+        }
+
+
+        void SoftCreate(string ArtName, string description, string link, string imagelink)
+        {
+
+            System.Windows.Deployment.Current.Dispatcher.BeginInvoke(() =>
+            {
+
+                Softrectcontext = Softrectcontext + 420;  //460
+                Softcontext = Softcontext + 215;          //230
+
+                //Title
+                TextBlock text = new TextBlock();
+                text.Text = ArtName;
+                text.FontFamily = new System.Windows.Media.FontFamily("Segoe WP Bold");
+                text.Foreground = new SolidColorBrush(Color.FromArgb(255, 0, 0, 0));
+                text.FontSize = 26;
+                Thickness margin = text.Margin;
+                margin.Left = 14;
+                margin.Top = -250 + Softcontext;
+                text.Margin = margin;
+
+                //grey rectangle
+                Rectangle rect = new Rectangle();
+                rect.Height = 85;
+                rect.Width = 450;
+                Thickness margin2 = rect.Margin;
+                margin2.Left = -6;
+                margin2.Top = -935 + Softrectcontext;
+                rect.Margin = margin2;
+                rect.Fill = new SolidColorBrush(Color.FromArgb(70, 0, 0, 0));
+                rect.Stroke = new SolidColorBrush(Color.FromArgb(00, 00, 00, 00));
+
+                //Description
+                TextBlock Description = new TextBlock();
+                Description.LineStackingStrategy = LineStackingStrategy.BlockLineHeight;
+                Description.LineHeight = 18;
+                Description.Text = description;
+                Description.FontFamily = new System.Windows.Media.FontFamily("Segoe WP Bold");
+                Description.Foreground = new SolidColorBrush(Color.FromArgb(235, 0, 0, 0));                 //235 x3
+                Description.FontSize = 19;
+                Thickness margin5 = Description.Margin;
+                margin5.Left = 15;
+                margin5.Top = -200 + Softcontext;        //302
+                Description.Margin = margin5;
+                System.Diagnostics.Debug.WriteLine(description);
+
+                //image
+                Image image = new Image();
+                image.Height = 150;
+                image.Width = 450;
+                image.Stretch = Stretch.UniformToFill;
+                Thickness margin6 = image.Margin;
+                margin6.Left = -6;
+                margin6.Top = -1000 + Softrectcontext;
+                image.Margin = margin6;
+                image.Source = new BitmapImage(new Uri(imagelink));
+
+                //add everything to the main grid       note: first you add will be deeper, and so on..
+
+                Software.Children.Add(image);
+                Software.Children.Add(rect);
+                //griglia.Children.Add(lateralRect);
+                Software.Children.Add(text);
+                Software.Children.Add(Description);
+
+                text.Tag = link;
+                text.Tap += new EventHandler<GestureEventArgs>(ArtTapped);
+
+
+            });
+
+
+        }
+
+        #endregion
+
+
     }
 }

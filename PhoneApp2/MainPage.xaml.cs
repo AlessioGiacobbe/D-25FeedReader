@@ -32,8 +32,8 @@ namespace PhoneApp2
 #region Feedreader builder
         int context = 0;
         int rectcontext = 0;
-        int Softrectcontext = 275;
-        int Softcontext = 260;
+        int Softrectcontext = 0;
+        int Softrectcontext2 = 0;
         int contanimation = 1;
         int contanimation_return = 0;
         bool IsNew;
@@ -60,8 +60,10 @@ namespace PhoneApp2
             StandardMargin.Left = 6;
             StandardMargin.Top = 0;
             Software.Margin = StandardMargin;
+            SoftScroller.Margin = Software.Margin;
 
             Request();                                      //request the feed's list
+            SoftRequest();                                  //request the software's list
 
             Time.Interval = new TimeSpan(0, 0, 0, 0, 30);       //initialize the animation's timer
             Time.Tick += new EventHandler(Timer_Tick);
@@ -404,6 +406,7 @@ namespace PhoneApp2
             Autor.IsHitTestVisible = false;
             Software.IsHitTestVisible = false;
             Scroller.IsHitTestVisible = false;
+            SoftScroller.IsHitTestVisible = false;
             //about.IsHitTestVisible = false;
         }
 
@@ -430,9 +433,9 @@ namespace PhoneApp2
             FocusChange();
             Software.Visibility = Visibility.Visible;
             Software.IsHitTestVisible = true;
+            SoftScroller.IsHitTestVisible = true;
 
             lateralOff();
-            SoftRequest();
         }
 
         #region Feedreader Links
@@ -549,66 +552,69 @@ namespace PhoneApp2
             System.Windows.Deployment.Current.Dispatcher.BeginInvoke(() =>
             {
 
-                Softrectcontext = Softrectcontext + 420;  //460
-                Softcontext = Softcontext + 215;          //230
-
                 //Title
                 TextBlock text = new TextBlock();
                 text.Text = ArtName;
                 text.FontFamily = new System.Windows.Media.FontFamily("Segoe WP Bold");
                 text.Foreground = new SolidColorBrush(Color.FromArgb(255, 0, 0, 0));
-                text.FontSize = 26;
+                text.FontSize = 31;
                 Thickness margin = text.Margin;
-                margin.Left = 14;
-                margin.Top = -250 + Softcontext;
+                margin.Left = 170;
+                margin.Top = 160 + Softrectcontext2;
                 text.Margin = margin;
 
                 //grey rectangle
                 Rectangle rect = new Rectangle();
                 rect.Height = 85;
-                rect.Width = 450;
+                rect.Width = 410;
                 Thickness margin2 = rect.Margin;
-                margin2.Left = -6;
-                margin2.Top = -935 + Softrectcontext;
+                margin2.Left = 15;
+                margin2.Top = -435 + Softrectcontext;
                 rect.Margin = margin2;
                 rect.Fill = new SolidColorBrush(Color.FromArgb(70, 0, 0, 0));
                 rect.Stroke = new SolidColorBrush(Color.FromArgb(00, 00, 00, 00));
 
                 //Description
+                description = SpliceText(description, 30);
                 TextBlock Description = new TextBlock();
                 Description.LineStackingStrategy = LineStackingStrategy.BlockLineHeight;
                 Description.LineHeight = 18;
                 Description.Text = description;
                 Description.FontFamily = new System.Windows.Media.FontFamily("Segoe WP Bold");
-                Description.Foreground = new SolidColorBrush(Color.FromArgb(235, 0, 0, 0));                 //235 x3
+                Description.Foreground = new SolidColorBrush(Color.FromArgb(235, 255, 255, 255));                 //235 x3
                 Description.FontSize = 19;
                 Thickness margin5 = Description.Margin;
-                margin5.Left = 15;
-                margin5.Top = -200 + Softcontext;        //302
+                margin5.Left = 170;
+                margin5.Top = 220 + Softrectcontext2;        //302
                 Description.Margin = margin5;
                 System.Diagnostics.Debug.WriteLine(description);
 
                 //image
                 Image image = new Image();
                 image.Height = 150;
-                image.Width = 450;
-                image.Stretch = Stretch.UniformToFill;
+                image.Width = 150;
+                image.Stretch = Stretch.Fill;
                 Thickness margin6 = image.Margin;
-                margin6.Left = -6;
-                margin6.Top = -1000 + Softrectcontext;
+                margin6.Left = -296;
+                margin6.Top = -500 + Softrectcontext;
                 image.Margin = margin6;
                 image.Source = new BitmapImage(new Uri(imagelink));
 
                 //add everything to the main grid       note: first you add will be deeper, and so on..
-
-                Software.Children.Add(image);
+                
                 Software.Children.Add(rect);
+                Software.Children.Add(image);
                 //griglia.Children.Add(lateralRect);
                 Software.Children.Add(text);
                 Software.Children.Add(Description);
 
                 text.Tag = link;
                 text.Tap += new EventHandler<GestureEventArgs>(ArtTapped);
+
+
+                
+                Softrectcontext = Softrectcontext + 400;  //460
+                Softrectcontext2 = Softrectcontext2 + 200;          //230
 
 
             });

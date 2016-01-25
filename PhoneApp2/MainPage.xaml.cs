@@ -40,6 +40,7 @@ namespace PhoneApp2
         bool IsLateralOn;
         DispatcherTimer Time = new DispatcherTimer();
         string oldtitle;
+        int numpage = 1;
 
         Thickness StandardMargin = new Thickness(); //decided to don't put pages in phone margin and align these after app's startup so i can edit it better
         #endregion
@@ -68,6 +69,7 @@ namespace PhoneApp2
             Time.Interval = new TimeSpan(0, 0, 0, 0, 30);       //initialize the animation's timer
             Time.Tick += new EventHandler(Timer_Tick);
             Time.Start();
+            
 
         }
 
@@ -126,7 +128,7 @@ namespace PhoneApp2
                 text.FontSize = 26;
                 Thickness margin = text.Margin;
                 margin.Left = 20;
-                margin.Top = 252 + context;
+                margin.Top = 267 + context;
                 text.Margin = margin;
 
                 //grey rectangle
@@ -135,7 +137,7 @@ namespace PhoneApp2
                 rect.Width = 450;
                 Thickness margin2 = rect.Margin;
                 margin2.Left = 0;
-                margin2.Top = -935 + rectcontext;
+                margin2.Top = -7084 + rectcontext;
                 rect.Margin = margin2;
                 rect.Fill = new SolidColorBrush(Color.FromArgb(70, 0, 0, 0));
                 rect.Stroke = new SolidColorBrush(Color.FromArgb(00, 00, 00, 00));
@@ -148,7 +150,7 @@ namespace PhoneApp2
                 date.FontSize = 15;
                 Thickness margin4 = date.Margin;
                 margin4.Left = 21;
-                margin4.Top = 282 + context;
+                margin4.Top = 297 + context;
                 date.Margin = margin4;
 
                 //Description
@@ -164,7 +166,7 @@ namespace PhoneApp2
                 Description.FontSize = 19;
                 Thickness margin5 = Description.Margin;
                 margin5.Left = 21;
-                margin5.Top = 302 + context;
+                margin5.Top = 317 + context;
                 Description.Margin = margin5;
                 System.Diagnostics.Debug.WriteLine(description);
 
@@ -177,7 +179,7 @@ namespace PhoneApp2
                 image.Stretch = Stretch.Fill;
                 Thickness margin6 = image.Margin;
                 margin6.Left = 0;
-                margin6.Top = -1052 + rectcontext;
+                margin6.Top = -7200 + rectcontext;
                 image.Margin = margin6;
                 image.Source = new BitmapImage(new Uri(imageurl));
 
@@ -197,8 +199,6 @@ namespace PhoneApp2
                 context = context + 230;
 
             });
-
-
         }
 
         private void ArtTapped(object sender, System.Windows.Input.GestureEventArgs e)
@@ -241,7 +241,7 @@ namespace PhoneApp2
 
         void Request()
         {
-            var link = new Uri("http://d-25.net/feed");
+            var link = new Uri("http://d-25.net/feed?paged=" + numpage);
             var request = (HttpWebRequest)WebRequest.Create(link);
             request.Method = "GET";
             request.BeginGetResponse(Responsetocken, request);
@@ -289,6 +289,7 @@ namespace PhoneApp2
                             CreateNew(post.Title, post.PubDate, post.creator, post.Description, post.Link);
                         }
                     }
+                    Changepage();
                 }
             }
             catch (System.Net.WebException ex)
@@ -305,6 +306,16 @@ namespace PhoneApp2
             ErrorGrid.Visibility = Visibility.Visible;
             ErrorGrid.IsHitTestVisible = true;
             ErrorIn.Begin();
+        }
+
+        void Changepage()
+        {
+            numpage++;
+            if(numpage < 4)
+            {
+                Request();
+            }
+
         }
 
         bool CheckIfNew(string currentitle)

@@ -57,7 +57,7 @@
 
         </Grid>
 
-        <ScrollViewer x:Name="Scroller" MaxHeight="99999" VerticalScrollBarVisibility="Visible" Grid.RowSpan="2" RenderTransformOrigin="0.5,0.5" Height="869" VerticalAlignment="Top" Margin="0,0,0,-69">
+        <ScrollViewer x:Name="Scroller" VerticalScrollBarVisibility="Visible" Grid.RowSpan="2" RenderTransformOrigin="0.5,0.5" Height="869" VerticalAlignment="Top" Margin="0,0,0,-69">
             <ScrollViewer.RenderTransform>
 
                 <CompositeTransform x:Name="scollertransform" TranslateX="0"/>
@@ -78,15 +78,23 @@
             </ScrollViewer.Resources>
 
 
-            <Grid  x:Name="griglia" MaxHeight="9999999" Grid.Row="0" HorizontalAlignment="Left" Height="7714"  VerticalAlignment="Top" Width="480" >
-               
+            <Grid  x:Name="griglia" Grid.Row="0" HorizontalAlignment="Left" Height="6250"  VerticalAlignment="Top" Width="480" >
+
             </Grid>
 
         </ScrollViewer>
 
-        <ScrollViewer IsHitTestVisible="False" x:Name="SoftScroller"  VerticalScrollBarVisibility="Visible" RenderTransformOrigin="0.5,0.5" Margin="1352,0,-1352,0" Grid.RowSpan="2" Foreground="{x:Null}">
-            <Grid  x:Name="Software" IsHitTestVisible="False" Grid.Row="1" HorizontalAlignment="Left" Height="934"  VerticalAlignment="Top" Width="480" RenderTransformOrigin="0.465,0.49" Canvas.ZIndex="2000" Visibility="Collapsed"/>
+        <ScrollViewer IsHitTestVisible="False" x:Name="SoftScroller"  VerticalScrollBarVisibility="Visible" RenderTransformOrigin="0.5,0.5" Margin="708,0,-694,0" Grid.RowSpan="2" Foreground="{x:Null}">
 
+            <Grid  x:Name="Software" IsHitTestVisible="False" Grid.Row="1" HorizontalAlignment="Left" Height="934"  VerticalAlignment="Top" Width="480" RenderTransformOrigin="0.465,0.49" Canvas.ZIndex="2000" Visibility="Collapsed">
+                <Grid.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FFCDCDCD" Offset="1"/>
+                        <GradientStop Color="White"/>
+                    </LinearGradientBrush>
+                </Grid.Background>
+
+            </Grid>
         </ScrollViewer>
 
         <Grid  x:Name="Autor" IsHitTestVisible="False" Grid.Row="0" HorizontalAlignment="Left" Height="869"  VerticalAlignment="Top" Width="480" RenderTransformOrigin="0.492,0.502" Grid.RowSpan="2" Margin="630,0,-630,-69" Canvas.ZIndex="2000" Visibility="Collapsed">
